@@ -94,12 +94,12 @@ services:
       - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"    
+      - "traefik.frontend.headers.frameDeny=true"
   sonarr:
     image: "linuxserver/sonarr"
     container_name: "sonarr"
-    volumes:      
-        - ${CONFIG_DIR}/appdata:/config        
+    volumes:
+        - ${CONFIG_DIR}/sonarr/config:/config
         - ${CONFIG_DIR}/sonarr/downloads:/downloads
         - nas:/mount/nas
     ports:
@@ -126,7 +126,7 @@ services:
       - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"     
+      - "traefik.frontend.headers.frameDeny=true"
 volumes:
   nas:
     driver: local
