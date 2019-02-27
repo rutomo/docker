@@ -1,4 +1,11 @@
 #!/bin/bash
+set -e
+
+if [ -f "$PUID" ]
+then
+  source .env
+else
+  echo ".env file does not exist. Please create one."
 
 if [ -z "$PUID" ]
 then 
@@ -42,9 +49,10 @@ then
   exit 1
 fi
 
-folders=( "traefik""portainer/data" "sabnzbd/config" "sabnzbd/downloads" "sabnzbd/incomplete" "sonarr/appdata" "sonarr/downloads" )
+folders=( "traefik" "portainer/data" "sabnzbd/config" "sabnzbd/downloads" "sabnzbd/incomplete" "sonarr/appdata" "sonarr/downloads" )
 
 for i in ${folders[@]}
 do
-  mkdir -p $i
+  mkdir -p "$CONFIG_DIR/$i"
+  echo $i
 done
