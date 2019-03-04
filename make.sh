@@ -51,7 +51,7 @@ then
   exit 1
 fi
 
-folders=( "traefik" "portainer/data" "sabnzbd/config" "sabnzbd/downloads" "sabnzbd/incomplete" "sonarr/appdata" "sonarr/downloads" )
+folders=( "traefik" "portainer/data" "sabnzbd/config" "sabnzbd/downloads" "sabnzbd/incomplete" "sonarr/appdata" "sonarr/downloads" "organizr/config" "plex/config" "plex/transcode" )
 
 for i in ${folders[@]}
 do
