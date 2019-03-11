@@ -160,6 +160,71 @@ services:
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
+  couchpotato:
+    image: "linuxserver/couchpotato"
+    container_name: "couchpotato"
+    volumes:
+        - ${CONFIG_DIR}/couchpotato/config:/config
+        - ${CONFIG_DIR}/couchpotato/downloads:/downloads
+        - nas:/mount/nas
+    ports:
+        - "5050:5050"
+    restart: always
+    privileged: true
+    environment:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - TZ=${TZ}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=couchpotato"
+      - "traefik.frontend.rule=Host:couchpotato.${DOMAINNAME}"
+      - "traefik.port=5050"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+    depends_on: 
+      - traefik
+  duplicati:
+    image: "duplicati/duplicati"
+    container_name: "duplicati"
+    volumes:
+        - ${CONFIG_DIR}/duplicati/8200:/config        
+        - nas:/mount/nas
+    ports:
+        - "8200:8200"
+    restart: always
+    privileged: true
+    environment:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - TZ=${TZ}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=duplicati"
+      - "traefik.frontend.rule=Host:duplicati.${DOMAINNAME}"
+      - "traefik.port=8200"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
     depends_on: 
       - traefik
   plex:
@@ -182,7 +247,7 @@ services:
       - "32414:32414/udp"
     environment:
       - TZ=${TZ}
-      - HOSTNAME="Plex Docker"      
+      - HOSTNAME="plex.${DOMAINNAME}"
       - PLEX_UID=${PUID}
       - PLEX_GID=${PGID}
       - ADVERTISE_IP="http://SERVER-IP:32400/"
